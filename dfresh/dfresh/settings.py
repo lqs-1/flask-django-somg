@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'corsheaders',
+    # 'corsheaders',
     'apps.user',
     'apps.order',
     'apps.cart',
@@ -47,9 +47,9 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
+    # 'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
-    # 'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -62,6 +62,7 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ORIGIN_WHITELIST = ('http://127.0.0.1:8080',)
 
+# 跨站
 CORS_ALLOW_METHODS = (
     'DELETE',
     'GET',
@@ -205,8 +206,17 @@ LOGGING = {
     # 定义具体处理日志的方式
     'handlers': {
         # 默认记录所有日志
-        # 输出错误日志
         'default': {
+            'level': 'INFO',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(log_dir, 'all-{}.log'.format(time.strftime('%Y-%m-%d'))),
+            'maxBytes': 1024 * 1024 * 5,  # 文件大小
+            'backupCount': 5,  # 备份数
+            'formatter': 'standard',  # 输出格式
+            'encoding': 'utf-8',  # 设置默认编码，否则打印出来汉字乱码
+        },
+        # 输出错误日志
+        'error': {
             'level': 'ERROR',
             'class': 'logging.handlers.RotatingFileHandler',
             'filename': os.path.join(log_dir, 'error-{}.log'.format(time.strftime('%Y-%m-%d'))),
@@ -221,16 +231,29 @@ LOGGING = {
             'class': 'logging.StreamHandler',
             'formatter': 'standard'
         },
-
+        # 输出info日志
+        'info': {
+            'level': 'INFO',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(log_dir, 'info-{}.log'.format(time.strftime('%Y-%m-%d'))),
+            'maxBytes': 1024 * 1024 * 5,
+            'backupCount': 5,
+            'formatter': 'standard',
+            'encoding': 'utf-8',  # 设置默认编码
+        },
     },
     # 配置用哪几种 handlers 来处理日志
     'loggers': {
         # 类型 为 lqs 处理所有类型的日志， 默认调用
-        'lqs': {
+        'default': {
             'handlers': ['default', 'console'],
             'level': 'INFO',
         },
-
+        # log 调用时需要当作参数传入
+        'log': {
+            'handlers': ['error', 'info', 'console', 'default'],
+            'level': 'INFO',
+        },
     }
 }
 
@@ -246,7 +269,6 @@ EMAIL_HOST_PASSWORD = 'dnievkdehwuobbdi'  # 授权码
 # EMAIL_USE_TLS = True  # 与SMTP服务器通信时，是否启动TLS链接(安全链接)默认false
 # EMAIL_USE_SSL = True        # SSL加密方式
 # #收件人看到的发件人，必须和上面的邮箱一样，否则发不出去
-
 EMAIL_FROM = '天天生鲜<749062870@qq.com>'
 
 
