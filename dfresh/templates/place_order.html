@@ -1,45 +1,10 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
-<head>
-	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-	<title>天天生鲜-提交订单</title>
-	<link rel="stylesheet" type="text/css" href="../static/css/reset.css">
-	<link rel="stylesheet" type="text/css" href="../static/css/main.css">
-</head>
-<body>
-	<div class="header_con">
-		<div class="header">
-			<div class="welcome fl">欢迎来到天天生鲜!</div>
-			<div class="fr">
-				<div class="login_info fl">
-					欢迎您：<em>张 山</em>
-				</div>
-				<div class="login_btn fl">
-					<a href="login.html">登录</a>
-					<span>|</span>
-					<a href="register.html">注册</a>
-				</div>
-				<div class="user_link fl">
-					<span>|</span>
-					<a href="user_center_info.html">用户中心</a>
-					<span>|</span>
-					<a href="cart.html">我的购物车</a>
-					<span>|</span>
-					<a href="user_center_order.html">我的订单</a>
-				</div>
-			</div>
-		</div>		
-	</div>
+{% extends 'base_order.html' %}
+{% block title %}天天生鲜-提交订单{% endblock title %}
 
-	<div class="search_bar clearfix">
-		<a href="index.html" class="logo fl"><img src="../static/images/logo.png"></a>
-		<div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;提交订单</div>
-		<div class="search_con fr">
-			<input type="text" class="input_text fl" name="" placeholder="搜索商品">
-			<input type="button" class="input_btn fr" name="" value="搜索">
-		</div>		
-	</div>
-	
+
+{% block order_title %}提交订单{% endblock order_title %}
+
+{% block body %}
 	<h3 class="common_title">确认收货地址</h3>
 
 	<div class="common_list_con clearfix">
@@ -109,6 +74,8 @@
 		<a href="javascript:;" id="order_btn">提交订单</a>
 	</div>	
 
+{% endblock body %}
+    {% block buttom_info %}
 	<div class="footer">
 		<div class="foot_link">
 			<a href="#">关于我们</a>
@@ -130,6 +97,9 @@
 		
 		<div class="mask"></div>
 	</div>
+    {% endblock buttom_info %}
+
+    {% block buttom_js %}
 	<script type="text/javascript" src="js/jquery-1.12.2.js"></script>
 	<script type="text/javascript">
 		$('#order_btn').click(function() {
@@ -146,5 +116,4 @@
 			});
 		});
 	</script>
-</body>
-</html>
+   {% endblock buttom_js %}
