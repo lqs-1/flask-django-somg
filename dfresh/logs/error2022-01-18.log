@@ -1,0 +1,94 @@
+[2022-01-18 16:48:29,403] [ERROR] User matching query does not exist.
+[2022-01-18 16:48:29,423] [ERROR] Internal Server Error: /user/login
+Traceback (most recent call last):
+  File "/home/lqs/桌面/git/fresh/venv/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/lqs/桌面/git/fresh/venv/lib/python3.8/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/lqs/桌面/git/fresh/venv/lib/python3.8/site-packages/django/views/generic/base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/lqs/桌面/git/fresh/venv/lib/python3.8/site-packages/django/views/generic/base.py", line 101, in dispatch
+    return handler(request, *args, **kwargs)
+  File "/home/lqs/桌面/git/fresh/dfresh/apps/user/views.py", line 148, in post
+    if user.is_active == 0:
+UnboundLocalError: local variable 'user' referenced before assignment
+[2022-01-18 16:48:29,424] [ERROR] "POST /user/login HTTP/1.1" 500 78996
+[2022-01-18 16:50:09,753] [ERROR] User matching query does not exist.
+[2022-01-18 16:50:25,413] [ERROR] User matching query does not exist.
+[2022-01-18 16:51:03,399] [ERROR] User matching query does not exist.
+[2022-01-18 16:51:17,148] [ERROR] User matching query does not exist.
+[2022-01-18 16:51:26,252] [ERROR] User matching query does not exist.
+[2022-01-18 16:51:26,300] [ERROR] Internal Server Error: /user/register
+Traceback (most recent call last):
+  File "/home/lqs/桌面/git/fresh/dfresh/apps/user/views.py", line 53, in post
+    user = Us.objects.create_user(username=username, email=email, password=password)
+  File "/home/lqs/桌面/git/fresh/venv/lib/python3.8/site-packages/django/db/models/manager.py", line 187, in __get__
+    raise AttributeError(
+AttributeError: Manager isn't available; 'auth.User' has been swapped for 'user.User'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/lqs/桌面/git/fresh/venv/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/lqs/桌面/git/fresh/venv/lib/python3.8/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/lqs/桌面/git/fresh/venv/lib/python3.8/site-packages/django/views/generic/base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/lqs/桌面/git/fresh/venv/lib/python3.8/site-packages/django/views/generic/base.py", line 101, in dispatch
+    return handler(request, *args, **kwargs)
+  File "/home/lqs/桌面/git/fresh/dfresh/apps/user/views.py", line 57, in post
+    logger.error(f'{e},{user.username}在存库的时候链接出错')
+AttributeError: 'NoneType' object has no attribute 'username'
+[2022-01-18 16:51:26,300] [ERROR] "POST /user/register HTTP/1.1" 500 88894
+[2022-01-18 16:52:58,523] [ERROR] User matching query does not exist.
+[2022-01-18 16:52:58,524] [ERROR] Manager isn't available; 'auth.User' has been swapped for 'user.User',在存库的时候链接出错
+[2022-01-18 16:52:58,562] [ERROR] Internal Server Error: /user/register
+Traceback (most recent call last):
+  File "/home/lqs/桌面/git/fresh/venv/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/lqs/桌面/git/fresh/venv/lib/python3.8/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/lqs/桌面/git/fresh/venv/lib/python3.8/site-packages/django/views/generic/base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/lqs/桌面/git/fresh/venv/lib/python3.8/site-packages/django/views/generic/base.py", line 101, in dispatch
+    return handler(request, *args, **kwargs)
+  File "/home/lqs/桌面/git/fresh/dfresh/apps/user/views.py", line 60, in post
+    token = ter.dumps({'user_id': user.id}).decode('utf-8')
+AttributeError: 'NoneType' object has no attribute 'id'
+[2022-01-18 16:52:58,563] [ERROR] "POST /user/register HTTP/1.1" 500 79846
+[2022-01-18 16:53:40,862] [ERROR] User matching query does not exist.
+[2022-01-18 16:53:40,864] [ERROR] Manager isn't available; 'auth.User' has been swapped for 'user.User',在存库的时候链接出错
+[2022-01-18 16:53:40,912] [ERROR] Internal Server Error: /user/register
+Traceback (most recent call last):
+  File "/home/lqs/桌面/git/fresh/venv/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/lqs/桌面/git/fresh/venv/lib/python3.8/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/lqs/桌面/git/fresh/venv/lib/python3.8/site-packages/django/views/generic/base.py", line 69, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/lqs/桌面/git/fresh/venv/lib/python3.8/site-packages/django/views/generic/base.py", line 101, in dispatch
+    return handler(request, *args, **kwargs)
+  File "/home/lqs/桌面/git/fresh/dfresh/apps/user/views.py", line 59, in post
+    token = ter.dumps({'user_id': user.id}).decode('utf-8')
+AttributeError: 'NoneType' object has no attribute 'id'
+[2022-01-18 16:53:40,913] [ERROR] "POST /user/register HTTP/1.1" 500 79835
+[2022-01-18 16:55:39,354] [ERROR] User matching query does not exist.
+[2022-01-18 16:55:39,356] [ERROR] Manager isn't available; 'auth.User' has been swapped for 'user.User',在存库的时候链接出错
+[2022-01-18 16:55:51,333] [ERROR] User matching query does not exist.
+[2022-01-18 16:55:51,334] [ERROR] Manager isn't available; 'auth.User' has been swapped for 'user.User',在存库的时候链接出错
+[2022-01-18 16:58:25,061] [ERROR] Manager isn't available; 'auth.User' has been swapped for 'user.User'
+[2022-01-18 16:58:25,067] [ERROR] Manager isn't available; 'auth.User' has been swapped for 'user.User',在存库的时候链接出错
+[2022-01-18 16:58:39,491] [ERROR] Manager isn't available; 'auth.User' has been swapped for 'user.User'
+[2022-01-18 16:58:39,492] [ERROR] Manager isn't available; 'auth.User' has been swapped for 'user.User',在存库的时候链接出错
+[2022-01-18 16:59:49,698] [ERROR] Manager isn't available; 'auth.User' has been swapped for 'user.User',在存库的时候链接出错
+[2022-01-18 17:13:06,946] [ERROR] User matching query does not exist.
+[2022-01-18 17:14:15,955] [ERROR] User matching query does not exist.
+[2022-01-18 17:15:18,355] [ERROR] User matching query does not exist.
+[2022-01-18 17:15:28,737] [ERROR] User matching query does not exist.
+[2022-01-18 17:18:55,479] [ERROR] set_password() got an unexpected keyword argument 'password', 修改失败
+[2022-01-18 17:19:29,257] [ERROR] set_password() got an unexpected keyword argument 'password', 修改失败
+[2022-01-18 17:21:25,271] [ERROR] set_password() got an unexpected keyword argument 'password', 修改失败
+[2022-01-18 17:21:54,276] [ERROR] set_password() got an unexpected keyword argument 'password', 修改失败
+[2022-01-18 17:22:08,976] [ERROR] set_password() got an unexpected keyword argument 'password', 修改失败
+[2022-01-18 17:23:49,966] [ERROR] set_password() got an unexpected keyword argument 'password', 修改失败

@@ -16,3 +16,5 @@ ACTIVE_EXPIRED = 405
 NON_USER = 406
 # 用户未激活
 NO_ACTIVE = 407
+# 数据库链接错误
+DB_ERROR = 408

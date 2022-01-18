@@ -9,7 +9,7 @@ from celery_tasks import tasks
 from django.db import transaction
 from django.contrib.auth import authenticate, login, logout, get_user_model
 from .models import Address
-# from utils.captcha import captcha
+from utils.captcha import captcha
 
 from django.core.cache import cache
 
@@ -18,7 +18,6 @@ logger = logging.getLogger('django')
 
 class UserRegisterView(View):
     def get(self, request):
-        cache.set('hell', 12)
         return render(request, 'register.html')
 
     def post(self, request):
@@ -40,7 +39,7 @@ class UserRegisterView(View):
             return render(request, 'register.html', {'errno': statusCode.EMAIL_ERROR, 'errmsg': '邮箱格式不正确'})
 
         try:
-            user = User.objects.get(username=username, password=password)
+            user = User.objects.get(username=username)
         except Exception as e:
             logger.error(e)
             user = None
@@ -50,11 +49,12 @@ class UserRegisterView(View):
 
         try:
             with transaction.atomic():
-                user = User.objects.create_user(username=username, password=password, email=email)
+                user = User.objects.create_user(username=username, email=email, password=password)
                 user.is_active = 0
                 user.save()
         except Exception as e:
-            logger.error(f'{e},{user.username}在存库的时候链接出错')
+            logger.error(f'{e},在存库的时候链接出错')
+            return render(request, 'register.html', {'errno': statusCode.DB_ERROR, 'errmsg': '链接数据库错误'})
 
         ter = TimedJSONWebSignatureSerializer(settings.SECRET_KEY, 300)
         token = ter.dumps({'user_id': user.id}).decode('utf-8')
@@ -147,6 +147,8 @@ class UserLoginView(View):
             user = User.objects.get(username=username)
         except Exception as e:
             logger.error(e)
+            return redirect('user:register')
+
 
         if user.is_active == 0:
             return redirect('user:reactive')
@@ -166,22 +168,26 @@ class UserLoginView(View):
         return response
 
 
+
+
+
+
 class UserLogoutView(View):
     def get(self, request):
         logout(request)
         return redirect('goods:index')
 
 
-class UserAlterPwdView(View):
 
+class UserAlterPwdView(View):
     def get(self, request):
         return render(request, 'alterpwd.html')
 
     def post(self, request):
-
         User = get_user_model()
         username = request.POST.get('username')
         password = request.POST.get('password')
+        # img_code = request.POST.get('img_code')
 
         if not all([username, password]):
             return render(request, 'alterpwd.html', {'errno': statusCode.INCOMPLETE_DATA, 'errmsg': '数据不完整'})
@@ -189,29 +195,23 @@ class UserAlterPwdView(View):
         try:
             with transaction.atomic():
                 user = User.objects.get(username=username)
-                user.password = password
+                user.set_password(password)
                 user.save()
         except Exception as e:
             logger.error(f'{e}, 修改失败')
             return render(request, 'alterpwd.html', {'errno': statusCode.NON_USER, 'errmsg': '没有此用户，修改失败'})
-        return redirect('user:login')
 
+        return redirect('user:login')
 
 # class GetImageCodeApi(View):
 #     def get(self, request, img_id):
-#         username = request.GET.get('username')
 #         name, text, imgcode = captcha.captcha.generate_captcha()
 #         try:
-#             cache.setex(f'img_code_{img_id}', text, 120)
+#             cache.set(f'img_code_{img_id}', text, 120)
 #         except Exception as e:
 #             logger.error(f'{e}, redis链接错误')
-#         resp = HttpResponse(imgcode)
-#         resp.headers["Content-Type"] = "image/jpg"
+#         resp = HttpResponse(imgcode, content_type="image/jpg")
 #         return resp
-
-
-
-
 
 
 class UserCenterView(View):
@@ -225,7 +225,6 @@ class UserCenterView(View):
                 logger.error(f'{e}, {user.username}没有地址信息')
                 address = None
         return render(request, 'user_center_info.html', {'active': 'user', 'address': address})
-
 
 
 
