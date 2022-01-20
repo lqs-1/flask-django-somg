@@ -9,9 +9,11 @@ from celery_tasks import tasks
 from django.db import transaction
 from django.contrib.auth import authenticate, login, logout, get_user_model
 from .models import Address
-from utils.captcha import captcha
+from utils.loginCheck import LoginRequiredMixin
 
-from django.core.cache import cache
+
+# from utils.captcha import captcha
+# from django.core.cache import cache
 
 logger = logging.getLogger('django')
 
@@ -158,7 +160,11 @@ class UserLoginView(View):
             return render(request, 'login.html', {'errno': statusCode.NON_USER, 'errmsg': '用户不存在, 或者未激活'})
 
         login(request, user)
-        response = redirect('goods:index')
+
+        next_url = request.GET.get('next', 'goods:index')
+
+        response = redirect(next_url)
+
         if remember == 'on':
             response.set_cookie('username', username, max_age=7*24*3600)
             response.set_cookie('password', password, max_age=7*24*3600)
@@ -214,7 +220,7 @@ class UserAlterPwdView(View):
 #         return resp
 
 
-class UserCenterView(View):
+class UserCenterView(LoginRequiredMixin, View):
     def get(self, request):
         user = request.user
         address = Address.objects.get_default_address(user)
@@ -227,16 +233,11 @@ class UserCenterView(View):
         return render(request, 'user_center_info.html', {'active': 'user', 'address': address})
 
 
-
-class UserCartView(View):
-    def get(self, request):
-        return render(request, 'cart.html')
-
-class UserOrderView(View):
+class UserOrderView(LoginRequiredMixin, View):
     def get(self, request):
         return render(request, 'user_center_order.html', {'active': 'order'})
 
-class UserAddressView(View):
+class UserAddressView(LoginRequiredMixin, View):
     def get(self, request):
         return render(request, 'user_center_site.html', {'active': 'address'})
 

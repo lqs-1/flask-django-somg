@@ -39,7 +39,11 @@ class GoodsSKU(BaseModel):
     status = models.SmallIntegerField(default=1, choices=status_choices, verbose_name='商品状态')
 
     def __str__(self):
-        return str(self.name) if str(self.name) else ""
+        if self.name:
+            return self.name
+        else:
+            return "未留"
+
 
     class Meta:
         db_table = 'df_goods_sku'
@@ -67,8 +71,6 @@ class GoodsImage(BaseModel):
     sku = models.ForeignKey('GoodsSKU', verbose_name='商品', on_delete=models.CASCADE)
     image = models.ImageField(upload_to='goods', verbose_name='图片路径')
 
-    def __str__(self):
-        return self.image
 
     class Meta:
         db_table = 'df_goods_image'
@@ -82,8 +84,6 @@ class IndexGoodsBanner(BaseModel):
     image = models.ImageField(upload_to='banner', verbose_name='图片')
     index = models.SmallIntegerField(default=0, verbose_name='展示顺序')
 
-    def __str__(self):
-        return self.sku
 
     class Meta:
         db_table = 'df_index_banner'
@@ -103,8 +103,7 @@ class IndexTypeGoodsBanner(BaseModel):
     display_type = models.SmallIntegerField(default=1, choices=DISPLAY_TYPE_CHOICES, verbose_name='展示类型')
     index = models.SmallIntegerField(default=0, verbose_name='展示顺序')
 
-    def __str__(self):
-        return self.type
+
 
     class Meta:
         db_table = 'df_index_type_goods'
