@@ -15,7 +15,7 @@
 	<div class="center_con clearfix">
 		<ul class="subnav fl">
             {% for goods_type in goods_type_list %}
-			<li><a href="{% url 'goods:list' goods_type.id %}" class={{ goods_type.logo }}>{{ goods_type.name }}</a></li>
+			<li><a href="{% url 'goods:list' goods_type.id 1 %}" class={{ goods_type.logo }}>{{ goods_type.name }}</a></li>
             {% endfor %}
 {#			<li><a href="#model02" class="seafood">海鲜水产</a></li>#}
 {#			<li><a href="#model03" class="meet">猪牛羊肉</a></li>#}
@@ -26,7 +26,7 @@
 		<div class="slide fl">
 			<ul class="slide_pics">
                 {% for goods_banner in goods_index_goods_banner %}
-				<li><a href="#"><img src="{{goods_banner.image.url}}" alt="{{ goods_banner.name }}"></a></li>
+				<li><a href="{% url 'goods:detail' goods_banner.id %}"><img src="{{goods_banner.image.url}}" alt="{{ goods_banner.name }}"></a></li>
                 {% endfor %}
 {#				<li><img src="../static/images/slide02.jpg" alt="幻灯片"></li>#}
 {#				<li><img src="../static/images/slide03.jpg" alt="幻灯片"></li>#}

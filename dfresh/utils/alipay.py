@@ -12,6 +12,6 @@ def gen_alipay_client():
         app_private_key_string=app_private_key_str,  # 应用私钥
         alipay_public_key_string=alipay_public_key_str,  # 支付宝公钥
         sign_type='RSA2',  # RSA或者RSA2
-        debug=False,  # True为沙箱
+        debug=True,  # True为沙箱
     )
     return alipay_client

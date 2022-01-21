@@ -53,7 +53,7 @@
 	<ul class="settlements">
 		<li class="col01"><input type="checkbox" name="" checked=""></li>
 		<li class="col02">全选</li>
-		<li class="col03">合计(不含运费)：<span>¥</span><em>43</em><br>共计<b>2</b>件商品</li>
+		<li class="col03">合计(不含运费)：<span>¥</span><em></em><br>共计<b></b>件商品</li>
 		<li class="col04"><a href="place_order.html">去结算</a></li>
 	</ul>
 {% endblock body %}
@@ -79,6 +79,9 @@
     <script type="text/javascript" src="../static/js/jquery-3.6.0.min.js"></script>
     <script>
 		// 计算被选中的商品的总件数和总价格
+    $(function () {
+        update_page_info()
+    })
    function update_page_info() {
         // 获取所有被选中的商品的checkbox
         // 获取所有被选中的商品所在的ul元素

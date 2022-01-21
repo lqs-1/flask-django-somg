@@ -199,13 +199,19 @@
 
 			<div class="pagenation">
                 {% if goods_list.has_previous %}
-				<a href="#">上一页</a>
+				<a href="{% url 'goods:list' goods_id goods_list.previous_page_number %}">上一页</a>
             {% endif %}
-                {% for page in goods_list.paginator.page_range %}
+                {% for page in pages %}
                     {% if page == goods_list.number %}
-                    <a href="{% url 'goods:list' page %}" class="active">{{ page }}</a>
+                        {% if page == 1 %}
+                            <a href="{% url 'goods:list' goods_id goods_list.number %}" class="active">首页</a>
+                        {% else %}
+                            <a href="{% url 'goods:list' goods_id page %}" class="active">{{ page }}</a>
+                        {% endif %}
+
+
                     {% else%}
-                    <a href="#">{{ page }}</a>
+                    <a href="{% url 'goods:list' goods_id page %}">{{ page }}</a>
                     {% endif %}
                 {% endfor %}
 {#				<a href="#" class="active">1</a>#}
@@ -214,7 +220,7 @@
 {#				<a href="#">4</a>#}
 {#				<a href="#">5</a>#}
             {% if goods_list.has_next %}
-				<a href="#">下一页></a>
+				<a href="{% url 'goods:list' goods_id goods_list.next_page_number %}">下一页></a>
             {% endif %}
 			</div>
 		</div>

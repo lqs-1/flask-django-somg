@@ -18,5 +18,13 @@ alipay.gen_alipay_client().api_alipay_trade_page_pay(
 
 class GetGoodsPayView(LoginRequiredMixin, View):
     def get(self, request):
+
+        goods_name = request.GET.get('goods_name')
+        goods_count = request.GET.get('goods_count')
+        goods_totail = request.GET.get('goods_totail')
+        print(goods_totail, goods_name, goods_count)
+
+
+
         return render(request, 'place_order.html', {'errno': statusCode.OK, 'errmsg': 'ok'})
 

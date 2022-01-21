@@ -4,6 +4,10 @@ function getCookie(name) {
     return r ? r[1] : undefined;
 }
 
+$(function (){
+    update_sku_amount()
+})
+
 $('#tag_detail').click(function () {
   $('#tag_comment').removeClass('active')
   $(this).addClass('active')
@@ -18,18 +22,18 @@ $('#tag_comment').click(function () {
   $('#tab_comment').show()
 })
 
-$(function (){
-    update_sku_amount()
-})
+
 
 
  // 计算商品的小计
         function update_sku_amount() {
             count = $('.num_show').val();
             price = $('.show_pirze').children('em').text();
+            goods_name = $("#goods_name").text()
             // 计算小计
             amount = parseFloat(price) * parseInt(count);
             // 设置商品的小计
+            $('.buy_btn').attr('href', 'http://127.0.0.1:8000/order/pay?goods_name='+goods_name+'&goods_count='+count+'&goods_totail='+amount)
             $('.total').children('em').text(amount.toFixed(2)+'元');
 
         }
@@ -85,6 +89,10 @@ $(function (){
             }
         })
     })
+
+
+
+
 
 
 

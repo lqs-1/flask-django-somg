@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block title %}天天生鲜-商品详情{% endblock title %}
 
 {% block top_js %}{% endblock top_js %}
@@ -56,7 +57,7 @@
 			<div class="total">总价：<em></em></div>
 			<div class="operate_btn">
 {#				<a href="javascript:;" class="buy_btn">立即购买</a>#}
-				<a href="{% url 'order:pay' %}" class="buy_btn">立即购买</a>
+				<a href="" class="buy_btn">立即购买</a>
 				<a href="javascript:;" class="add_cart" id="add_cart">加入购物车</a>
 			</div>
 		</div>
@@ -130,7 +131,7 @@
 {% endblock buttom_info %}
 {% block buttom_js %}
     <script type="text/javascript" src="../static/js/jquery-3.6.0.min.js"></script>
-    <script type="text/javascript" src="../static/js/detail.js"></script>
+    <script type="text/javascript" src="{% static 'js/detail.js' %}"></script>
 
 
 {% endblock buttom_js %}

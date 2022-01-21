@@ -53,25 +53,45 @@ class GetGoodsDetailView(View):
         return render(request, 'detail.html', context)
 
 class GetGoodsListView(View):
-    def get(self, request, goods_type_id):
+    def get(self, request, goods_type_id, page):
         # print(goods_type_id)
         goods_type = GoodsType.objects.get(id=goods_type_id)
         goods_list = GoodsSKU.objects.filter(type=goods_type)
         goods_list_tj = goods_list[:2]
 
         paginator = Paginator(goods_list, 2)
+        # 获取第n页
+        # paginator.get_page(2)
+        goods_list = paginator.get_page(page)
 
-        pages = paginator.num_pages
-
-
-        goods_list = paginator.get_page(2)
         # goods_list.has_previous()
+
+        # 控制的显示页码
+        num_pages = paginator.num_pages
+
+        # 显示五个页码
+        # 总页数小于5，显示全部
+        if num_pages < 5:
+            pages = range(1, num_pages+1)
+        # 处于前三页
+        elif page <= 3:
+            pages = range(1, 6)
+        # 处于后三页
+        elif num_pages - page <= 2:
+            pages = range(num_pages -4, num_pages+1)
+        # 中间情况
+        else:
+            pages = range(page - 2, page + 3)
+
 
         context = {
             'goods_list': goods_list,
             'goods_list_tj': goods_list_tj,
+            'goods_id': goods_type_id,
             'pages': pages,
         }
+        # 以下是在页面渲染使用
+        # # 是否有前一页
         # goods_list.has_previous()
         # # 是否有后一页
         # goods_list.has_next()
@@ -79,7 +99,11 @@ class GetGoodsListView(View):
         # goods_list.number()
         # # 便利页码
         # goods_list.paginator.page_range()
-        # 获取第n页
-        # paginator.get_page(2)
+        # 下一页
+        # goods_list.paginator.next_page_number
+        # 上一页
+        # goods_list.paginator.previous_page_number
 
-        return render(request, 'list.html', context)# # 是否有前一页
+        return render(request, 'list.html', context)
+
+
