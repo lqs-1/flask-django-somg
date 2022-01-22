@@ -54,16 +54,19 @@ class GetGoodsDetailView(View):
         # 获取评论信息
         comments = OrderGoods.objects.filter(sku=goods.id)
 
-        # 放入历史浏览记录
-        conn = get_redis_connection('default')
-        key = f'history_{request.user.id}'
-        # history = conn.lrange(key, 0, -1)
-        # 移除列表中的goods_id
-        conn.lrem(key, 0, goods_id)
-        # 把goods_id插入到列表的左侧
-        conn.lpush(key, goods_id)
-        # 只保存用户最新浏览的5条信息
-        # conn.ltrim(key, 0, 4)
+        user = request.user
+
+        if user.is_authenticated:
+            # 放入历史浏览记录
+            conn = get_redis_connection('default')
+            key = f'history_{user.id}'
+            # history = conn.lrange(key, 0, -1)
+            # 移除列表中的goods_id
+            conn.lrem(key, 0, goods_id)
+            # 把goods_id插入到列表的左侧
+            conn.lpush(key, goods_id)
+            # 只保存用户最新浏览的5条信息
+            # conn.ltrim(key, 0, 4)
 
         context = {
             'goods': goods,
