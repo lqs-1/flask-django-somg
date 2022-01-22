@@ -137,8 +137,6 @@ class GetGoodsCartPayView(LoginRequiredMixin, View):
         cart_id_list = request.POST.getlist('cart_id')
         pay_style = request.POST.get('pay_style')
 
-        print(address_id, cart_id_list, pay_style)
-
         if not all([address_id, cart_id_list, pay_style]):
             return redirect("cart:cart")
             logger.error("数据不完整")
@@ -204,7 +202,6 @@ class GetGoodsCartPayView(LoginRequiredMixin, View):
             return redirect("cart:cart")
 
         pay_url = settings.ALIPAY_BASE_URL + pay_string
-        print(pay_url)
 
         return redirect(pay_url)
 
@@ -231,7 +228,6 @@ class GetGoodsOrderPayView(View):
             logger.error(f'{e}, {request.user.username}支付失败')
             return redirect("cart:cart")
         pay_url = settings.ALIPAY_BASE_URL + pay_string
-        print(pay_url)
         return redirect(pay_url)
 
 

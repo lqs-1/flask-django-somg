@@ -93,7 +93,7 @@ class AddGoodsCartView(LoginRequiredMixin, View):
 class DeleteGoodsCartView(LoginRequiredMixin, View):
     def post(self, request):
         goods_name = request.POST.get('goods_name')
-        print(goods_name)
+        # print(goods_name)
         try:
             with transaction.atomic():
                 GoodsCart.objects.get(name=goods_name).delete()
