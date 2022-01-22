@@ -18,9 +18,6 @@ class GoodsType(BaseModel):
         verbose_name = '商品种类'
         verbose_name_plural = verbose_name
 
-
-
-
 class GoodsSKU(BaseModel):
     '''商品SKU模型类'''
     status_choices = (

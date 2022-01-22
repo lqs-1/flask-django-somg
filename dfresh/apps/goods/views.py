@@ -3,9 +3,20 @@ from django.shortcuts import redirect, render, reverse
 from .models import GoodsType, IndexGoodsBanner, IndexTypeGoodsBanner, IndexPromotionBanner, GoodsSKU
 from apps.order.models import OrderGoods
 # from dfresh import settings
-from django.core.cache import cache
+# from django.core.cache import cache
+from django_redis import get_redis_connection
+from redis import StrictRedis
 
 from django.core.paginator import Paginator
+'''
+django使用redis的两种方式：
+    第一种没有配置django_redis缓存：
+        sr = StrictRedis(host=,port=,db=)
+    第二种配置了django_redis缓存
+        conn = get_redis_connection('default')
+
+'''
+
 
 
 class GetAndSetIndexView(View):
@@ -40,10 +51,21 @@ class GetAndSetIndexView(View):
 class GetGoodsDetailView(View):
     def get(self, request, goods_id):
         goods = GoodsSKU.objects.get(id=goods_id)
-        # 展示同类商品
+        # 展示推荐商品
         show_goods_list = GoodsSKU.objects.filter(type=goods.type).order_by("-sales")[:2]
         # 获取评论信息
         comments = OrderGoods.objects.filter(sku=goods.id)
+
+        # 放入历史浏览记录
+        conn = get_redis_connection('default')
+        key = f'history_{request.user.id}'
+        # history = conn.lrange(key, 0, -1)
+        # 移除列表中的goods_id
+        conn.lrem(key, 0, goods_id)
+        # 把goods_id插入到列表的左侧
+        conn.lpush(key, goods_id)
+        # 只保存用户最新浏览的5条信息
+        # conn.ltrim(key, 0, 4)
 
         context = {
             'goods': goods,
@@ -83,12 +105,12 @@ class GetGoodsListView(View):
         else:
             pages = range(page - 2, page + 3)
 
-
         context = {
             'goods_list': goods_list,
             'goods_list_tj': goods_list_tj,
             'goods_id': goods_type_id,
             'pages': pages,
+            'goods_type': goods_type
         }
         # 以下是在页面渲染使用
         # # 是否有前一页

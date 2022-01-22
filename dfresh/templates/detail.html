@@ -12,14 +12,14 @@
 			<div class="subnav_con fl">
 				<h1>全部商品分类</h1>	
 				<span></span>			
-				<ul class="subnav">
-					<li><a href="#" class="fruit">新鲜水果</a></li>
-					<li><a href="#" class="seafood">海鲜水产</a></li>
-					<li><a href="#" class="meet">猪牛羊肉</a></li>
-					<li><a href="#" class="egg">禽类蛋品</a></li>
-					<li><a href="#" class="vegetables">新鲜蔬菜</a></li>
-					<li><a href="#" class="ice">速冻食品</a></li>
-				</ul>
+{#				<ul class="subnav">#}
+{#					<li><a href="#" class="fruit">新鲜水果</a></li>#}
+{#					<li><a href="#" class="seafood">海鲜水产</a></li>#}
+{#					<li><a href="#" class="meet">猪牛羊肉</a></li>#}
+{#					<li><a href="#" class="egg">禽类蛋品</a></li>#}
+{#					<li><a href="#" class="vegetables">新鲜蔬菜</a></li>#}
+{#					<li><a href="#" class="ice">速冻食品</a></li>#}
+{#				</ul>#}
 			</div>
 			<ul class="navlist fl">
 				<li><a href="{% url 'goods:index' %}">首页</a></li>
@@ -30,7 +30,7 @@
 	<div class="breadcrumb">
 		<a href="#">全部分类</a>
 		<span>></span>
-		<a href="#">新鲜水果</a>
+		<a href="#">{{ goods.type.name }}</a>
 		<span>></span>
 		<a href="#">商品详情</a>
 	</div>
@@ -130,8 +130,6 @@
 	<div class="add_jump"></div>
 {% endblock buttom_info %}
 {% block buttom_js %}
-    <script type="text/javascript" src="../static/js/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/detail.js' %}"></script>
-
-
 {% endblock buttom_js %}

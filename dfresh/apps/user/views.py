@@ -1,3 +1,5 @@
+import json
+
 from django.shortcuts import render, redirect, reverse, HttpResponse
 from django.views.generic import View
 from utils import statusCode
@@ -10,6 +12,11 @@ from django.db import transaction
 from django.contrib.auth import authenticate, login, logout, get_user_model
 from .models import Address
 from utils.loginCheck import LoginRequiredMixin
+from apps.order.models import OrderGoods, OrderInfo
+from django.core.paginator import Paginator
+from django_redis import get_redis_connection
+from apps.goods.models import GoodsSKU
+from django.core.paginator import Paginator
 
 
 # from utils.captcha import captcha
@@ -221,8 +228,49 @@ class UserAlterPwdView(View):
 
 
 class UserCenterView(LoginRequiredMixin, View):
-    def get(self, request):
+    def get(self, request, page):
         user = request.user
+        # 获取浏览记录
+        conn = get_redis_connection('default')
+        key = f'history_{user.id}'
+        history_id_list_byte = conn.lrange(key, 0, -1)
+
+        history_id_list_real = list()
+        for his in history_id_list_byte:
+            his = str(his, encoding='utf-8')
+            history_id_list_real.append(his)
+
+        # # 查询方式一
+        # goods_list = GoodsSKU.objects.filter(id__in=history_id_list_real)
+        # # 排序
+        # history_list_real = list()
+        # for history_id in history_id_list_real:
+        #     for goods in goods_list:
+        #         if history_id == goods.id:
+        #             history_list_real.append(goods)
+
+        # 查询方式二
+        history_list_real = list()
+        for goods_id in history_id_list_real:
+            goods = GoodsSKU.objects.get(id=goods_id)
+            history_list_real.append(goods)
+
+        paginator = Paginator(history_list_real, 5)
+        history_list_real = paginator.get_page(page)
+
+        num_page = paginator.num_pages
+        if num_page < 5:
+            pages = range(1, num_page + 1)
+        elif page <= 3:
+            pages = range(1, 6)
+        elif num_page - page <= 2:
+            pages = range(num_page - 4, num_page + 1)
+            # 中间情况
+        else:
+            pages = range(page - 2, page + 3)
+
+
+
         address = Address.objects.get_default_address(user)
         if address is None:
             try:
@@ -230,14 +278,51 @@ class UserCenterView(LoginRequiredMixin, View):
             except Exception as e:
                 logger.error(f'{e}, {user.username}没有地址信息')
                 address = None
-        return render(request, 'user_center_info.html', {'active': 'user', 'address': address})
+        return render(request, 'user_center_info.html', {'active': 'user', 'address': address, 'history_list_real': history_list_real, 'pages': pages})
 
 
 class UserOrderView(LoginRequiredMixin, View):
-    def get(self, request):
-        return render(request, 'user_center_order.html', {'active': 'order'})
+    def get(self, request, page):
+
+        order_info = OrderInfo.objects.filter(user=request.user)
+
+        for order in order_info:
+            order.order_status_real = OrderInfo.ORDER_STATUS[order.order_status]
+
+        paginator = Paginator(order_info, 3)
+        order_info = paginator.get_page(page)
+        # order_info.has_previous()
+        # order_info.previous_page_number()
+
+
+        context = {
+            'active': 'order',
+            'order_info': order_info,
+        }
+
+        return render(request, 'user_center_order.html', context)
 
 class UserAddressView(LoginRequiredMixin, View):
     def get(self, request):
-        return render(request, 'user_center_site.html', {'active': 'address'})
+        try:
+            address = Address.objects.get_default_address(user=request.user)
+        except Exception as e:
+            logger.error(f"{e},{request.user.username}没有默认地址")
+            address = None
+
+        return render(request, 'user_center_site.html', {'active': 'address', 'address': address})
+
+    def post(self, request):
+        receiver = request.POST.get('receiver')
+        addr = request.POST.get('addr')
+        postid = request.POST.get('postid')
+        phone = request.POST.get('phone')
+
+        if Address.objects.get_default_address(user=request.user):
+            address = Address.objects.create(user=request.user, receiver=receiver, addr=addr, zip_code=postid, phone=phone)
+        else:
+            address = Address.objects.create(user=request.user, receiver=receiver, addr=addr, zip_code=postid, phone=phone, is_default=1)
+
+        # print(receiver, addr, postid, phone)
+        return redirect("user:address")
 

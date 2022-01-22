@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'haystack',
     'corsheaders',
     'apps.user',
     'apps.order',
@@ -355,11 +356,133 @@ FDFS_BASE_URL = 'http://172.17.0.2:8888/'
 
 
 LOGIN_URL = '/user/login'
+
 # 支付宝
-
-
 with open(os.path.join(BASE_DIR, "config/app_private_key.pem"), "rb") as pf:
     APP_PRIVATE_KEY_STR = pf.read()
 
 with open(os.path.join(BASE_DIR, "config/alipay_public_key.pem"), "rb") as pf:
     ALIPAY_PUBLIC_KEY_STR = pf.read()
+
+ALIPAY_BASE_URL = "https://openapi.alipaydev.com/gateway.do?"
+
+
+# 全文检索框架配置
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        # 配置使用whoosh引擎
+        'ENGINE': 'haystack.backends.whoosh_cn_backend.WhooshEngine',
+        # 'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
+        # 检索文件路径, 自动生成
+        'PATH': os.path.join(BASE_DIR, 'whoosh.index')
+
+        # 'URL': 'http://127.0.0.1:8983/solr'
+        # ...or for multicore...
+        # 'URL': 'http://127.0.0.1:8983/solr/mysite',
+    },
+}
+# 当增删查改数据时候自动生成索引
+HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+
+
+'''
+    分词器使用：
+        安装全文检索框架：pip install haystack
+        安装搜索引擎：pip install whoosh
+        安装jieba分词器: pip install jieba
+        
+        whoosh路径：....../site-packages/whoosh
+        haystack路径：....../site-packages/haystack
+        haystack默认引擎路径：....../site-packages/haystack/backends
+        
+        
+        第一步：
+        在settings文件中配置：
+            注册应用haystack
+            HAYSTACK_CONNECTIONS = {
+                'default': {
+                    # 配置使用whoosh引擎，cn版本是我们加了jieba分词器之后的whoosh引擎，原始版本不能删除
+                    'ENGINE': 'haystack.backends.whoosh_cn_backend.WhooshEngine',
+                    # 'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
+                    # 检索文件路径, 自动生成
+                    'PATH': os.path.join(BASE_DIR, 'whoosh.index')
+                },
+            }
+            # 当增删查改数据时候自动生成索引
+            HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+            
+        第二步：
+        编写索引类：
+            索引类定义在需要进行所搜的应用模块下面
+            索引类名：模型类名+Index, 如（GoodsSKUIndex）
+            
+            # 定义索引类
+            from haystack import indexes
+            from .models import GoodsSKU
+            
+            # 指定对于某个类的某些数据建立索引
+            # 索引类名格式： 模型类名+Index
+            class GoodsSKUIndex(indexes.SearchIndex, indexes.Indexable):
+                # 索引类里面的索引字段
+                # use_template：指定根据表中的哪些字段建立索引文件， 把说明放在一个文件中
+                text = indexes.CharField(document=True, use_template=True)
+                # 返回模型类
+                def get_model(self):
+                    # 返回你的模型类
+                    return GoodsSKU
+                # 建立索引的数据
+                def index_queryset(self, using=None):
+                    return self.get_model().objects.all()
+                    
+        第三步：
+        建立索引文件
+            在templates文件夹下创建search/indexes/数据模型类所属的应用名/数据模型类类名小写_text.txt
+            在这个txt文件中书写指定根据表中的哪些字段建立索引
+            {{object.name}}  # 根据商品名称建立索引
+            {{object.desc}}  # 根据商品描述建立索引
+            {{object.goods.detail}}  # 根据商品详情建立索引
+            
+        第四步：
+        python manager.py rebuild_index  生成检索文件
+        
+        第五步：
+        配置haystack路由: 
+            path('search', include('haystack.urls')),  # 配置全文检索框架路由
+            
+        第六步：
+        在search/indexes/下创建一个search.html文件，来展示结果
+            query对象：搜索的关键字
+            搜索的关键字{{ query }}<br>
+            
+            page对象：搜索结果，便利出来通过object.xxx使用，有以下作用
+            遍历对象
+            {% for item in page %}
+                {{ item.object.name }}
+            {% endfor %}
+            判断上一页下一页：
+            {% if page.has_previous %}<a href="/search?q={{ query }}&page={{ page.previous_page_number }}">下一页></a>{% endif %}
+            {% if page.has_next %}<a href="/search?q={{ query }}&page={{ page.next_page_number }}">下一页></a>{% endif %}
+            判断是否是当前页：
+            {% if pindex == page.number %}
+            
+            {#Page对象可以便历出来，便历的都是SearchResult实例对象，里面的object供我们使用#}
+            
+            分页的Paginator对象{{ paginator }}<br>
+           {% for pindex in paginator.page_range %}
+                {% if pindex == page.number %}
+                    <a href="/search?q={{ query }}&page={{ pindex }}" class="active">{{ pindex }}</a>
+                {% else%}
+                    <a href="/search?q={{ query }}&page={{ pindex }}">{{ pindex }}</a>
+                {% endif %}
+            {% endfor %}
+            
+            
+        第七步：
+        更换分词器（jieba）：
+        在/site-packages/haystack/backends下创建ChineseAnalyzer.py，内容网上搜索
+        在/site-packages/haystack/backends下复制一份whoosh_backend.py并且改名为whoosh_cn_backend.py,然后修改里面analyzer=ChineseTokenizer(),先引入，再使用
+        在配置文件中修改使用的whoosh引擎为whoosh_cn_backend
+        
+        重新生成检索文件：python manager.py rebuild_index
+
+'''

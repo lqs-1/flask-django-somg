@@ -447,7 +447,7 @@ html,body{height:100%}
 .order_list_th{width:1198px;border:1px solid #ddd;background-color:#f7f7f7;margin:20px auto 0;}
 .order_list_th li{float:left;height:30px;line-height:30px}
 .order_list_th .col01{width:20%;margin-left:20px}
-.order_list_th .col02{width:20%}
+.order_list_th .col02{width:50%}
 
 
 .order_list_table{

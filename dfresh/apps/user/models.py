@@ -39,6 +39,8 @@ class Address(BaseModel):
 
     # 自定义一个模型管理器对象
     objects = AddressManager()
+    def __str__(self):
+        return self.addr
 
     class Meta:
         db_table = 'df_address'

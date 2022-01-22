@@ -19,6 +19,7 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('search', include('haystack.urls')),  # 配置全文检索框架路由
     path('user/', include('apps.user.urls', namespace='user')),
     path('cart/', include('apps.cart.urls', namespace='cart')),
     path('order/', include('apps.order.urls', namespace='order')),

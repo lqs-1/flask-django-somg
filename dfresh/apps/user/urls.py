@@ -8,8 +8,8 @@ urlpatterns = [
     path('login', UserLoginView.as_view(), name='login'),
     path('logout', UserLogoutView. as_view(), name='logout'),
 
-    path('user', UserCenterView.as_view(), name='user'),
-    path('order', UserOrderView.as_view(), name='order'),
+    path('user/<int:page>', UserCenterView.as_view(), name='user'),
+    path('order/<int:page>', UserOrderView.as_view(), name='order'),
     path('address', UserAddressView.as_view(), name='address'),
 
     # path('getalter', GetUserAlterPwdView.as_view(), name='pwd'),
