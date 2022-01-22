@@ -5,12 +5,25 @@
 				<h3 class="common_title2">收货地址</h3>
 				<div class="site_con">
 					<dl>
-                        {% if address is None %}
+                        {% if address_default is None %}
                         {% else %}
 						<dt>当前地址：</dt>
-						<dd>{{ address.addr}} （{{ address.receiver }} 收） {{ address.phone}}</dd>
+                            <dd> {{ address_default.addr}} （{{ address_default.receiver }} 收） {{ address_default.phone}}</dd>
+
+                             {% if not address %}
+                             {% else %}
+                             <dt>地址列表：</dt>
+                             <form method="post" action="/user/alteraddr">
+                             {% csrf_token %}
+                                 {% for addr in address %}
+                                <dd><input type="radio" name="address" value={{ addr.id }}>  {{ addr.addr}} （{{ addr.receiver }} 收） {{ addr.phone}}</dd>
+                                 {% endfor %}
+                                  <center><input type="submit" value="设为默认"></center>
+                                 </form>
+                             {% endif %}
+
                         {% endif %}
-					</dl>					
+					</dl>
 				</div>
 				<h3 class="common_title2">编辑地址</h3>
 				<div class="site_con">

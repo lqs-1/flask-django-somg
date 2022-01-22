@@ -305,12 +305,13 @@ class UserOrderView(LoginRequiredMixin, View):
 class UserAddressView(LoginRequiredMixin, View):
     def get(self, request):
         try:
-            address = Address.objects.get_default_address(user=request.user)
+            address_default = Address.objects.get_default_address(user=request.user)
+            address = Address.objects.filter(user=request.user, is_default=False)
         except Exception as e:
             logger.error(f"{e},{request.user.username}没有默认地址")
             address = None
 
-        return render(request, 'user_center_site.html', {'active': 'address', 'address': address})
+        return render(request, 'user_center_site.html', {'active': 'address', 'address': address, 'address_default': address_default})
 
     def post(self, request):
         receiver = request.POST.get('receiver')
@@ -326,3 +327,24 @@ class UserAddressView(LoginRequiredMixin, View):
         # print(receiver, addr, postid, phone)
         return redirect("user:address")
 
+class UserAddressDefaultAlterView(View):
+    def post(self, request):
+        user = request.user
+        address_id = request.POST.get('address')
+
+        if address_id is None:
+            return redirect('user:address')
+
+        try:
+            with transaction.atomic():
+                addr = Address.objects.get_default_address(user=user)
+                addr.is_default = False
+                addr.save()
+
+                address = Address.objects.get(id=address_id)
+                address.is_default = True
+                address.save()
+        except Exception as e:
+            logger.error(f'{e}, {user.username}修改默认失败')
+
+        return redirect('user:address')

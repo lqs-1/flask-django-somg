@@ -35,7 +35,7 @@ class GetGoodsPayView(LoginRequiredMixin, View):
         if not all([goods_totail, goods_name, goods_count]):
             return redirect('goods:detail', goods.id)
 
-        address_list = Address.objects.all()
+        address_list = Address.objects.filter(user=request.user)
         context = {
             'errno': statusCode.OK,
             'errmsg': 'ok',
@@ -119,7 +119,7 @@ class GetGoodsCartPayView(LoginRequiredMixin, View):
             goods_price_totail += cart_goods.totail
             cart_goods_list.append(cart_goods)
 
-        address_list = Address.objects.all()
+        address_list = Address.objects.filter(user=request.user)
 
         context = {
             'errno': statusCode.OK,

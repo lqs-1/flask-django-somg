@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import UserRegisterView, UserActiveView, UserActiveGetView, UserLoginView, UserLogoutView, UserCenterView, UserOrderView, UserAddressView, UserAlterPwdView
+from .views import UserRegisterView, UserActiveView, UserActiveGetView, UserLoginView, UserLogoutView, UserCenterView, UserOrderView, UserAddressView, UserAlterPwdView, UserAddressDefaultAlterView
 app_name = 'user'
 urlpatterns = [
     path('register', UserRegisterView.as_view(), name='register'),
@@ -15,6 +15,7 @@ urlpatterns = [
     # path('getalter', GetUserAlterPwdView.as_view(), name='pwd'),
     # path('alterpwd/<str:mig_id>', UserAlterPwdView.as_view(), name='alterpwd'),
     path('alterpwd', UserAlterPwdView.as_view(), name='alterpwd'),
+    path('alteraddr', UserAddressDefaultAlterView.as_view(), name='alteraddr'),
 
     # path('imgcode/<str:img_id>', GetImageCodeApi.as_view(), name='getcode')
 ]

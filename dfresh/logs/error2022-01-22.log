@@ -964,3 +964,52 @@ Traceback (most recent call last):
     raise TemplateDoesNotExist(template_name, chain=chain)
 django.template.exceptions.TemplateDoesNotExist: search/search.html
 [2022-01-22 13:48:50,930] [ERROR] "GET /search?q=nhu HTTP/1.1" 500 89568
+[2022-01-22 18:10:26,500] [ERROR] all() got an unexpected keyword argument 'user',lqs没有默认地址
+[2022-01-22 18:10:27,944] [ERROR] all() got an unexpected keyword argument 'user',lqs没有默认地址
+[2022-01-22 18:11:04,808] [ERROR] all() got an unexpected keyword argument 'user',lqs没有默认地址
+[2022-01-22 18:11:05,440] [ERROR] all() got an unexpected keyword argument 'user',lqs没有默认地址
+[2022-01-22 18:11:05,608] [ERROR] all() got an unexpected keyword argument 'user',lqs没有默认地址
+[2022-01-22 18:11:05,790] [ERROR] all() got an unexpected keyword argument 'user',lqs没有默认地址
+[2022-01-22 18:11:46,890] [ERROR] all() got an unexpected keyword argument 'user',lqs没有默认地址
+[2022-01-22 18:11:47,694] [ERROR] all() got an unexpected keyword argument 'user',lqs没有默认地址
+[2022-01-22 18:39:53,088] [ERROR] Internal Server Error: /user/alteraddr
+Traceback (most recent call last):
+  File "/home/lqs/桌面/git/fresh/venv/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/lqs/桌面/git/fresh/venv/lib/python3.8/site-packages/django/core/handlers/base.py", line 188, in _get_response
+    self.check_response(response, callback)
+  File "/home/lqs/桌面/git/fresh/venv/lib/python3.8/site-packages/django/core/handlers/base.py", line 309, in check_response
+    raise ValueError(
+ValueError: The view apps.user.views.view didn't return an HttpResponse object. It returned None instead.
+[2022-01-22 18:39:53,088] [ERROR] "POST /user/alteraddr HTTP/1.1" 500 71744
+[2022-01-22 18:40:06,605] [ERROR] Internal Server Error: /user/alteraddr
+Traceback (most recent call last):
+  File "/home/lqs/桌面/git/fresh/venv/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/lqs/桌面/git/fresh/venv/lib/python3.8/site-packages/django/core/handlers/base.py", line 188, in _get_response
+    self.check_response(response, callback)
+  File "/home/lqs/桌面/git/fresh/venv/lib/python3.8/site-packages/django/core/handlers/base.py", line 309, in check_response
+    raise ValueError(
+ValueError: The view apps.user.views.view didn't return an HttpResponse object. It returned None instead.
+[2022-01-22 18:40:06,606] [ERROR] "POST /user/alteraddr HTTP/1.1" 500 71872
+[2022-01-22 18:40:24,086] [ERROR] Internal Server Error: /user/alteraddr
+Traceback (most recent call last):
+  File "/home/lqs/桌面/git/fresh/venv/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/lqs/桌面/git/fresh/venv/lib/python3.8/site-packages/django/core/handlers/base.py", line 188, in _get_response
+    self.check_response(response, callback)
+  File "/home/lqs/桌面/git/fresh/venv/lib/python3.8/site-packages/django/core/handlers/base.py", line 309, in check_response
+    raise ValueError(
+ValueError: The view apps.user.views.view didn't return an HttpResponse object. It returned None instead.
+[2022-01-22 18:40:24,086] [ERROR] "POST /user/alteraddr HTTP/1.1" 500 71744
+[2022-01-22 18:40:29,037] [ERROR] Internal Server Error: /user/alteraddr
+Traceback (most recent call last):
+  File "/home/lqs/桌面/git/fresh/venv/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/lqs/桌面/git/fresh/venv/lib/python3.8/site-packages/django/core/handlers/base.py", line 188, in _get_response
+    self.check_response(response, callback)
+  File "/home/lqs/桌面/git/fresh/venv/lib/python3.8/site-packages/django/core/handlers/base.py", line 309, in check_response
+    raise ValueError(
+ValueError: The view apps.user.views.view didn't return an HttpResponse object. It returned None instead.
+[2022-01-22 18:40:29,037] [ERROR] "POST /user/alteraddr HTTP/1.1" 500 71872
+[2022-01-22 18:48:27,937] [ERROR] list index out of range, liqisong没有地址信息
