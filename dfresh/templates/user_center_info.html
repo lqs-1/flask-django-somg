@@ -71,13 +71,7 @@
             {% endif %}
                 {% for page in pages %}
                     {% if page == history_list_real.number %}
-                        {% if page == 1 %}
-                            <a href="{% url 'user:user' page %}" class="active">首页</a>
-                        {% else %}
-                            <a href="{% url 'user:user' page %}" class="active">{{ page }}</a>
-                        {% endif %}
-
-
+                        <a href="{% url 'user:user' page %}" class="active">{{ page }}</a>
                     {% else%}
                     <a href="{% url 'user:user' page %}">{{ page }}</a>
                     {% endif %}
