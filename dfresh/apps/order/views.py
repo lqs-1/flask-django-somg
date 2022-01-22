@@ -25,8 +25,8 @@ logger = logging.getLogger('django')
 
 
 class GetGoodsPayView(LoginRequiredMixin, View):
+    """直接购买"""
     def get(self, request):
-
         goods_name = request.GET.get('goods_name')
         goods_count = request.GET.get('goods_count')
         goods_totail = request.GET.get('goods_totail')
@@ -208,12 +208,13 @@ class GetGoodsCartPayView(LoginRequiredMixin, View):
 
         return redirect(pay_url)
 
+
 class GetGoodsOrderPayView(View):
+    '''订单页面支付'''
     def post(self, request):
         order_id = request.POST.get('order_id')
 
         order_info = OrderInfo.objects.get(order_id=order_id)
-
 
         try:
 

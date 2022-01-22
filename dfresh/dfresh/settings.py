@@ -383,8 +383,6 @@ HAYSTACK_CONNECTIONS = {
 }
 # 当增删查改数据时候自动生成索引
 HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
-
-
 '''
     分词器使用：
         安装全文检索框架：pip install haystack

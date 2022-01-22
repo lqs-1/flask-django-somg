@@ -7,7 +7,7 @@ from ..goods.models import GoodsSKU
 from utils import statusCode
 import logging
 from django.db import transaction
-from django_redis import get_redis_connection
+# from django_redis import get_redis_connection
 
 logger = logging.getLogger('django')
 
@@ -33,6 +33,7 @@ class GetGoodsCartView(LoginRequiredMixin, View):
             'user_cart_list': user_cart_list,
         }
         return render(request, 'cart.html', context)
+
 
 class AddGoodsCartView(LoginRequiredMixin, View):
     def post(self, request):
@@ -61,7 +62,6 @@ class AddGoodsCartView(LoginRequiredMixin, View):
 
         # 保存购物车
         user = request.user
-
         try:
             with transaction.atomic():
                 goods = GoodsSKU.objects.get(id=goods_id)
@@ -96,7 +96,7 @@ class DeleteGoodsCartView(LoginRequiredMixin, View):
         print(goods_name)
         try:
             with transaction.atomic():
-                cart = GoodsCart.objects.get(name=goods_name).delete()
+                GoodsCart.objects.get(name=goods_name).delete()
         except Exception as e:
             logger.error(f'{e}, 删除购物车商品失败，数据库链接失败')
             return JsonResponse({'errno': statusCode.DB_ERROR, 'errmsg': '数据库链接错误'})

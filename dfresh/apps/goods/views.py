@@ -18,7 +18,6 @@ django使用redis的两种方式：
 '''
 
 
-
 class GetAndSetIndexView(View):
     """商品促销活动先不管"""
     def get(self, request):
@@ -28,7 +27,6 @@ class GetAndSetIndexView(View):
         goods_index_goods_banner = IndexGoodsBanner.objects.all().order_by("index")
         # 获取活动
         active_goods_list = IndexPromotionBanner.objects.all()[:2]
-
 
         #  获取分类商品
         for goods_type in goods_type_list:

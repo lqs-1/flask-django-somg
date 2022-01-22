@@ -1,8 +1,10 @@
 from celery import Celery
 import os
+
 import django
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'dfresh.settings')
 django.setup()
+
 from django.core.mail import send_mail
 from dfresh import settings
 
