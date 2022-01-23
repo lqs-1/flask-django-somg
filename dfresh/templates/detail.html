@@ -51,10 +51,25 @@
 				<div class="num_add fl">
 					<input type="text" class="num_show fl" value="1">
 					<a href="javascript:;" class="add fr">+</a>
-					<a href="javascript:;" class="minus fr">-</a>	
-				</div> 
+					<a href="javascript:;" class="minus fr">-</a>
+
+				</div>
+                 <div class="pagenation">
+                <p>其他规格:</p>
+                <ul style="list-style: none">
+                    {% for goods_tj in goods_list %}
+                        {% if goods.id == goods_tj.id %}
+                        <li style="display: inline"><a href="{% url 'goods:detail' goods_tj.id %}" class="active">{{ goods_tj.name }}</a></li>
+                        {% else %}
+                        <li style="display: inline"><a href="{% url 'goods:detail' goods_tj.id %}">{{ goods_tj.name }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
 			</div>
+
 			<div class="total">总价：<em></em></div>
+
 			<div class="operate_btn">
 {#				<a href="javascript:;" class="buy_btn">立即购买</a>#}
 				<a href="" class="buy_btn">立即购买</a>

@@ -51,6 +51,9 @@ class GetGoodsDetailView(View):
         goods = GoodsSKU.objects.get(id=goods_id)
         # 展示推荐商品
         show_goods_list = GoodsSKU.objects.filter(type=goods.type).order_by("-sales")[:2]
+        # 同spu商品
+        goods_list = GoodsSKU.objects.filter(goods=goods.goods)
+        # print(goods_list)
         # 获取评论信息
         comments = OrderGoods.objects.filter(sku=goods.id)
 
@@ -71,7 +74,8 @@ class GetGoodsDetailView(View):
         context = {
             'goods': goods,
             'show_goods_list': show_goods_list,
-            'comments': comments
+            'comments': comments,
+            'goods_list': goods_list
         }
         return render(request, 'detail.html', context)
 
