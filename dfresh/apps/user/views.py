@@ -1,5 +1,3 @@
-import json
-
 from django.shortcuts import render, redirect, reverse, HttpResponse
 from django.views.generic import View
 from utils import statusCode
@@ -75,9 +73,7 @@ class UserRegisterView(View):
 
 class UserActiveView(View):
     def get(self, request, token):
-
         User = get_user_model()
-
         ter = TimedJSONWebSignatureSerializer(settings.SECRET_KEY, 300)
         try:
             info = ter.loads(token)
@@ -88,6 +84,7 @@ class UserActiveView(View):
                 user.save()
         except Exception as e:
             logger.error(f'{e}, 激活链接过期')
+            return redirect('user:reactive')
 
         return redirect('user:login')
 
@@ -327,6 +324,7 @@ class UserAddressView(LoginRequiredMixin, View):
         # print(receiver, addr, postid, phone)
         return redirect("user:address")
 
+
 class UserAddressDefaultAlterView(View):
     def post(self, request):
         user = request.user
@@ -346,5 +344,4 @@ class UserAddressDefaultAlterView(View):
                 address.save()
         except Exception as e:
             logger.error(f'{e}, {user.username}修改默认失败')
-
         return redirect('user:address')
