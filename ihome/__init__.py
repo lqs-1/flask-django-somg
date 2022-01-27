@@ -19,14 +19,18 @@ redis_store = None
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 # 配置日志记录器,指明日志保存的路径,每个日志文件的最大大小,保存的日志文件的个数上限
-file_log_handler = RotatingFileHandler(f"logs/error_{time.strftime('%Y-%m-%d')}.log", maxBytes=1024*1024*100, backupCount=10)
+file_log_error_handler = RotatingFileHandler(f"logs/error_{time.strftime('%Y-%m-%d')}.log", maxBytes=1024*1024*100, backupCount=10)
+# file_log_all_handler = RotatingFileHandler(f"logs/all_{time.strftime('%Y-%m-%d')}.log", maxBytes=1024*1024*100, backupCount=10)
 # 配置写入等级
-file_log_handler.setLevel(logging.WARNING)
+file_log_error_handler.setLevel(logging.ERROR)
+# file_log_all_handler.setLevel(logging.INFO)
 # 创建日志记录格式
 formatter = logging.Formatter('%(levelname)s %(filename)s:%(lineno)d %(message)s')
 # 为刚创建的日志记录器设置日志记录格式
-file_log_handler.setFormatter(formatter)
-logger.addHandler(file_log_handler)
+file_log_error_handler.setFormatter(formatter)
+# file_log_all_handler.setFormatter(formatter)
+logger.addHandler(file_log_error_handler)
+# logger.addHandler(file_log_all_handler)
 
 
 # 工厂模式
@@ -39,7 +43,7 @@ def create_app(config_name):
     db.init_app(app)
     # 初始化redis
     global redis_store
-    redis_store = StrictRedis(host=config_class.REDIS_HOST, port=config_class.REDIS_PORT)
+    redis_store = StrictRedis(host=config_class.REDIS_HOST, port=config_class.REDIS_PORT, db=config_class.REDIS_DB)
     # 利用flask-session，将session数据保存到redis中
     Session(app)
     # 为flask填充csrf防护

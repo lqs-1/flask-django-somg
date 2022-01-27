@@ -19,6 +19,12 @@ function generateUUID() {
 }
 
 function generateImageCode() {
+   // 形成图片验证码的链接的后段地址,设置到页面中,让浏览器请求验证码图片
+    // 1:生成验证码编号(两种方式:时间戳uuid全局唯一标识符)
+    imageCodeId = generateUUID();
+    // 设置图片url
+    var url = "/api_1/image_code/" + imageCodeId
+    $(".image-code img").attr("src", url)
 }
 
 function sendSMSCode() {
@@ -37,14 +43,13 @@ function sendSMSCode() {
         $(".phonecode-a").attr("onclick", "sendSMSCode();");
         return;
     }
-    $.get("/api/smscode", {mobile:mobile, code:imageCode, codeId:imageCodeId}, 
+    $.get("/api_1/sms_code/" + mobile, {code:imageCode, codeId:imageCodeId},
         function(data){
-            if (0 != data.errno) {
+            if (1 != data.errno) {
                 $("#image-code-err span").html(data.errmsg); 
                 $("#image-code-err").show();
-                if (2 == data.errno || 3 == data.errno) {
-                    generateImageCode();
-                }
+
+                generateImageCode();
                 $(".phonecode-a").attr("onclick", "sendSMSCode();");
             }   
             else {
@@ -81,6 +86,7 @@ $(document).ready(function() {
     $("#password2").focus(function(){
         $("#password2-err").hide();
     });
+    // 阻止表单默认行为
     $(".form-register").submit(function(e){
         e.preventDefault();
         mobile = $("#mobile").val();
@@ -107,5 +113,35 @@ $(document).ready(function() {
             $("#password2-err").show();
             return;
         }
+
+        // 组织 数据
+        request_date = {
+            mobile: mobile,
+            sms_code: phoneCode,
+            pwd: passwd,
+            cpwd: passwd2,
+        }
+        json_date = JSON.stringify(request_date)
+
+        $.ajax({
+            url: '/api_1/register',
+            type: 'post',
+            dataType: 'json',
+            contentType: 'application/json',
+            data: json_date,
+            headers: {
+                "X-CSRFToken": getCookie("csrf_token")
+            },  // 请求头,将csrf_token存入
+            success: function (resp) {
+                if (resp.errno == "1") {
+                    // 注册成功,跳转页面
+                    location.href = "/login.html"
+                } else {
+                    alert(resp.errmsg)
+                }
+            }
+
+        })
+
     });
 })

@@ -1,8 +1,7 @@
 from ihome import create_app
 from flask_script import Manager
 from flask_migrate import Migrate, MigrateCommand
-from ihome import db
-
+from ihome.models import *
 app = create_app('product')
 manager = Manager(app)
 Migrate(app, db)

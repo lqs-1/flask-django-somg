@@ -24,5 +24,21 @@ $(document).ready(function() {
             $("#password-err").show();
             return;
         }
+        request_date = {
+            mobile: mobile,
+            pwd: passwd,
+        }
+
+        $.get('/api_1/login', request_date, function (resp){
+            if (resp.errno == '1'){
+                location.href = '/index.html'
+            }
+            else{
+                alert(resp.errmsg)
+            }
+        })
+
+
+
     });
 })
