@@ -1,5 +1,5 @@
 from flask import Flask
-from config import config_mapper
+from config.config import config_mapper
 from flask_sqlalchemy import SQLAlchemy
 from redis import StrictRedis
 from flask_session import Session  # 可以通过这个拓展自定义session存储
@@ -13,6 +13,8 @@ import time
 db = SQLAlchemy()
 # 创建redis链接对象
 redis_store = None
+# 配置类
+config_class = None
 
 # 配置日志信息
 # 设置日志记录等级
@@ -37,6 +39,7 @@ logger.addHandler(file_log_error_handler)
 def create_app(config_name):
     app = Flask(__name__)
     # 添加配置
+    global config_class
     config_class = config_mapper.get(config_name)
     app.config.from_object(config_class)
     # 初始化数据库

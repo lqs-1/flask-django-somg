@@ -19,4 +19,17 @@ function logout() {
 }
 
 $(document).ready(function(){
+    $.get('/api_1/user', function (resp) {
+        if (resp.errno == '1'){
+            $("#user-name").html(resp.data.name);
+            $("#user-mobile").html(resp.data.mobile);
+            if (resp.data.avatar) {
+                $("#user-avatar").attr("src", resp.data.avatar);
+            }
+        }
+
+    })
+
+
+
 })

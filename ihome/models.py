@@ -2,6 +2,7 @@ from datetime import datetime
 from . import db
 from werkzeug.security import generate_password_hash, check_password_hash  # 生成hash
 from ihome.utils import controllerCode
+# import functools
 
 class BaseModel(object):
     """模型基类，为每个模型补充创建时间与更新时间"""
@@ -27,16 +28,18 @@ class User(BaseModel, db.Model):
 
     # 加上property之后,会把函数变为属性,属性名即为函数名
 
-    # 加上property装饰器后，会把函数变为属性，属性名即为函数名
+    # 加上property装饰器后，会把函数变为属性，属性名即为函数名,只定义property，那么，就只是getter方法。只读的
     @property
     def password(self):
         """读取属性的函数行为"""
         # print(user.password)  # 读取属性时被调用
         # 函数的返回值会作为属性值
         # return "xxxx"
-        raise AttributeError("这个属性只能设置，不能读取")
+        return self.password_hash
+        # raise AttributeError("这个属性只能设置，不能读取")
 
     @password.setter
+    # 填充setter方法，当属性使用
     def password(self, value):
         """
         设置属性  user.passord = "xxxxx"

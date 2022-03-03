@@ -1,0 +1,32 @@
+ERROR checkUser.py:42 decoding to str: need a bytes-like object, NoneType found, 64c23550-afac-44dc-94a5-79dbb04d9ea2验证码过期
+ERROR checkUser.py:42 decoding to str: need a bytes-like object, NoneType found, d6bf7fbf-5864-4c3b-86d0-0d23b983811d验证码过期
+ERROR app.py:1457 Exception on /api_1/user [GET]
+Traceback (most recent call last):
+  File "/home/lqs/桌面/git/ihome/venv/lib/python3.8/site-packages/flask/app.py", line 2073, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/lqs/桌面/git/ihome/venv/lib/python3.8/site-packages/flask/app.py", line 1518, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/lqs/桌面/git/ihome/venv/lib/python3.8/site-packages/flask/app.py", line 1516, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/lqs/桌面/git/ihome/venv/lib/python3.8/site-packages/flask/app.py", line 1502, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
+  File "/home/lqs/桌面/git/ihome/ihome/utils/login_check.py", line 17, in wrapper
+    return view_func(*args, **kwargs)
+  File "/home/lqs/桌面/git/ihome/ihome/api_1/userMessage.py", line 55, in get_avatar
+    avatar = fdfs_config.BASE_URL + avatar
+TypeError: can only concatenate str (not "NoneType") to str
+ERROR app.py:1457 Exception on /api_1/user [GET]
+Traceback (most recent call last):
+  File "/home/lqs/桌面/git/ihome/venv/lib/python3.8/site-packages/flask/app.py", line 2073, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/lqs/桌面/git/ihome/venv/lib/python3.8/site-packages/flask/app.py", line 1518, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/lqs/桌面/git/ihome/venv/lib/python3.8/site-packages/flask/app.py", line 1516, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/lqs/桌面/git/ihome/venv/lib/python3.8/site-packages/flask/app.py", line 1502, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
+  File "/home/lqs/桌面/git/ihome/ihome/utils/login_check.py", line 17, in wrapper
+    return view_func(*args, **kwargs)
+  File "/home/lqs/桌面/git/ihome/ihome/api_1/userMessage.py", line 55, in get_avatar
+    avatar = fdfs_config.BASE_URL + avatar
+TypeError: can only concatenate str (not "NoneType") to str
