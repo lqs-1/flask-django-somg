@@ -350,7 +350,7 @@ SESSION_CACHE_ALIAS = "default"
 DEFAULT_FILE_STORAGE = 'utils.storage.FastDFSStorage'
 
 FDFS_CLIENT = 'config/client.conf'
-FDFS_BASE_URL = 'http://172.17.0.2:8888/'
+FDFS_BASE_URL = 'http://172.17.0.3:8888/'
 
 
 LOGIN_URL = '/user/login'
